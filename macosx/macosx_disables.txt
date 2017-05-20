@@ -1,0 +1,304 @@
+# Turn off a bunch of annoying crap in MacOS X Mountain Lion
+# NOTE: You shouldn’t change the defaults for an app while it’s running.
+
+####################################################################
+# Settings that require sudo
+# If you make this a script, you can add a line with “sudo -v” to ask for the
+# password at the beginning.
+####################################################################
+
+# Disable notification center globally; this will also get rid of the menu bar icon
+sudo defaults write /System/Library/LaunchAgents/com.apple.notificationcenterui  KeepAlive -bool false
+killall NotificationCenter
+
+# Stop automatic downloading of software updates
+sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload -bool false
+
+# By default, Mountain Lion will check for updates once a week.  Change to 3 days.
+sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate ScheduleFrequency 3
+
+####################################################################
+# Chrome
+####################################################################
+
+# Set New Tab as default page; this also prevents Chrome from restoring tabs on restart
+defaults write com.Google.Chrome HomepageIsNewTabPage -bool true
+
+####################################################################
+# Safari
+####################################################################
+
+# Remove Reading list and Top Sites from Bookmarks bar
+defaults write com.apple.Safari ProxiesInBookmarksBar ‘()’
+
+# Set safari home page to blank
+defaults write com.apple.Safari HomePage -string “about:blank”
+
+# Tell Safari not to automatically open “safe” files after download
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+
+# Turn off History/TopSites cache
+defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
+
+####################################################################
+# Mail
+####################################################################
+
+# Disable send/reply animations
+defaults write com.apple.mail DisableReplyAnimations -bool true
+defaults write com.apple.mail DisableSendAnimations -bool true
+
+# Stop full names from copying out of email addresses (thank god!
+# makes address cut and paste actually useful)
+defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
+
+# Stop mail from showing the first few lines of the message in the message list
+defaults write com.apple.mail RichMessageList -bool false
+
+# Put mail back into classic view mode (list on top, message on bottom)
+defaults write com.apple.mail HorizontalViewerLayout -bool false
+
+# NOTE: By default, the mailbox list won’t be displayed, and turning it on via “defaults” is
+# fraught with peril, so it’s easier to use the UI.  Under “View”, there is a “Show Mailbox List”
+# option that you can select if you have multiple mailboxes/folders and
+# you want to see them. 
+
+####################################################################
+# Dock
+#
+# Note: Must run “killall Dock” for these settings to take effect
+####################################################################
+
+# Change from 3D to 2D dock
+# This is hideous, so I’ve disabled it, but left it documented here
+# defaults write com.apple.Dock no-glass -bool true
+
+# Disable space switching animation
+defaults write com.apple.Dock workspaces-swoosh-animation-off -bool YES
+
+# Make hidden app icons translucent in the dock
+defaults write com.apple.Dock showhidden -bool true
+
+# disable Springboard zoom animations
+defaults write com.apple.Dock expose-animation-duration -int 0
+
+# Disable Launchpad show/hide animation
+defaults write com.apple.Dock springboard-show-duration -int 0
+defaults write com.apple.Dock springboard-hide-duration -int 0
+
+# Disable Launchpad page change animation
+defaults write com.apple.Dock springboard-page-duration -float 0
+
+# Get rid of the animation when revealing the dock
+defaults write com.apple.Dock autohide-time-modifier -float 0
+
+# Remove delay for auto-hide and auto-show of the dock
+defaults write com.apple.Dock autohide-delay -float 0
+
+# Turn off app open animation
+defaults write com.apple.Dock launchanim -bool false
+
+# Enable spring loading for everything on the Dock
+defaults write com.apple.Dock enable-spring-load-actions-on-all-items -boolean true
+
+# Set Dock icon size to 34 pixels
+defaults write com.apple.Dock tilesize -int 34
+
+# Enable auto-hide of the Dock
+defaults write com.apple.Dock autohide -bool true
+
+# Disable Expose
+# Note - this makes a couple of the following commands
+# unnecessary; I’ve left them here for completeness and because
+# they are harmless.
+defaults write com.apple.dock mcx-expose-disabled -bool true
+
+# Mission Control groups windows by app by default; disable
+defaults write com.apple.Dock expose-group-by-app -bool false
+
+# Disable showing Dashboard as a space in mission control
+defaults write com.apple.Dock dashboard-in-overlay -bool true
+
+# Enable indicator lights for active apps on dock
+defaults write com.apple.Dock show-process-indicators -bool true
+
+# Disable dashboard (F4 will do nothing now).  If you don’t use it, this is a good idea, since
+# dashboard consumes CPU cycles even when not actively being used.
+# Makes some of the dashboard stuff above unnecessary
+defaults write com.apple.dashboard mcx-disabled -bool true
+
+# Stop icons from bouncing
+defaults write com.apple.Dock no-bouncing -bool true
+
+# Restart dock
+killall Dock
+
+####################################################################
+# Menu bar
+####################################################################
+
+# disable transparency
+defaults write -g AppleEnableMenuBarTransparency -bool false
+
+# Get rid of useless icons.  To do this, first look at the current setting of the default:
+# ~ > defaults read com.apple.systemuiserver menuExtras
+# (
+# ”/System/Library/CoreServices/Menu Extras/VPN.menu”,
+# "/System/Library/CoreServices/Menu Extras/Sync.menu",
+# "/System/Library/CoreServices/Menu Extras/TimeMachine.menu",
+# "/System/Library/CoreServices/Menu Extras/AirPort.menu",
+# "/System/Library/CoreServices/Menu Extras/Volume.menu",
+# "/System/Library/CoreServices/Menu Extras/Bluetooth.menu",
+# "/System/Library/CoreServices/Menu Extras/Battery.menu",
+# "/System/Library/CoreServices/Menu Extras/TextInput.menu",   
+# “/System/Library/CoreServices/Menu Extras/Clock.menu”,
+#  “/System/Library/CoreServices/Menu Extras/User.menu”
+# )
+# Then write a new variable with the ones you want, in the order you want them
+# Note: For some reason, you can’t delete the Volume item this way; need to debug
+
+defaults write com.apple.systemuiserver menuExtras -array “/System/Library/CoreServices/Menu Extras/VPN.menu” “/System/Library/CoreServices/Menu Extras/TimeMachine.menu” “/System/Library/CoreServices/Menu Extras/AirPort.menu” "/System/Library/CoreServices/Menu Extras/Volume.menu" "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu" "/System/Library/CoreServices/Menu Extras/User.menu"
+
+
+####################################################################
+# General Animations
+####################################################################
+
+# Disable window animations (have to restart apps for this to take effect)
+defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
+
+# Disable smooth scrolling
+defaults write -g NSScrollAnimationEnabled -bool false
+
+# Make Cocoa applications window resize faster
+defaults write -g NSWindowResizeTime -float 0.001
+
+# Disable Quick Look window animations
+defaults write -g QLPanelAnimationDuration -float 0
+
+# Disable window animations for version browser
+defaults write -g NSDocumentRevisionsWindowTransformAnimation -bool false
+
+# Disable animation for scrolling column
+defaults write -g NSBrowserColumnAnimationSpeedMultiplier -float 0
+
+####################################################################
+# Spell check/autocorrect
+####################################################################
+
+# Disable spelling check while typing
+defaults write -g NSAllowContinuousSpellChecking -bool false
+
+# Disable auto-correct
+defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+
+####################################################################
+# Finder stuff
+#
+# NOTE: Must run “killall Finder” for these to take effect
+####################################################################
+
+# Show hard drives on desktop
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+
+# Don’t show external drives on Desktop
+# You might not want to set this - I have a bunch of backup volumes
+# that make my desktop icky so I set it.
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
+
+# Show removable media on Desktop
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+
+# Show mounted servers on Desktop
+# I don’t use this but you might - here for documentation purposes
+# defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
+
+# Allow text selection in Quick Look Windows
+defaults write com.apple.Finder QLEnableTextSelection -bool true
+
+# Show hidden files in finder
+defaults write com.apple.Finder AppleShowAllFiles -bool true
+
+# Change default finder viewing style (Nlsv, icnv, clmv, or Flwv)
+defaults write com.apple.Finder FXPreferredViewStyle clmv
+
+# Disable all animations
+defaults write com.apple.Finder DisableAllAnimations -bool true
+
+# Use POSIX path as Finder window title
+defaults write com.apple.Finder _FXShowPosixPathInTitle -bool true
+
+# Restart finder for settings to take effect
+killall Finder
+
+####################################################################
+# Scrolling-related foo
+####################################################################
+
+# Disable idiotic rubberband scrolling
+defaults write -g NSScrollViewRubberbanding -bool false
+
+# Always show scrollbars
+defaults write -g AppleShowScrollBars -string “Always”
+
+# Disable highly unnatural “natural” scrolling
+defaults write -g com.apple.swipescrolldirection -bool false
+
+# Turn off the left-right “swipe between pages” gesture on trackpad
+defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
+
+####################################################################
+# Etc settings
+####################################################################
+
+# Show all filename extensions
+defaults write -g AppleShowAllExtensions -bool true
+
+# Always expand print panel
+defaults write -g PMPrintingExpandedStateForPrint -bool true
+
+# Always expand save panel
+defaults write -g NSNavPanelExpandedStateForSaveMode -bool true
+
+# Disable Resume; without this when you restart an app it will
+# automatically open everything you had open when you quit
+# Note: Some apps (like Chrome) have their own setting that overrides this.
+# If an App isn’t behaving, check its settings.
+defaults write -g NSQuitAlwaysKeepsWindows -bool false
+
+# Disable “reopen windows when logging back in”
+defaults write com.apple.loginwindow TALLogoutSavesState -bool false
+
+# Allow UI navigation using keyboard
+defaults write -g AppleKeyboardUIMode -int 3
+
+# Stop the help window hovering over everything even when not in focus
+defaults write com.apple.helpviewer DevMode -bool true
+
+# The Library folder is hidden by default; make it visible
+# Note: This only holds until you update MacOS; you will have to reset
+# it.
+chflags nohidden ~/Library/
+
+# Put screenshots somewhere other than on the Desktop
+defaults write com.apple.screencapture location ~/Screenshots
+
+# Change default screenshot type from png to jpg
+defaults write com.apple.screencapture type jpg
+
+# Disable shadow in screenshots
+defaults write com.apple.screencapture disable-shadow -bool true
+killall SystemUIServer
+
+# Turn off rounded corners in QuickTime windows (must quit Quicktime first)
+defaults write com.apple.QuickTimePlayerX MGCinematicWindowDebugForceNoRoundedCorners 1
+
+# Disable Automatic termination of Applications (without this, MacOS
+# will “helpfully” kill inactive apps after a certain period
+defaults write -g NSDisableAutomaticTermination -bool yes
+
+# Use plain text by default in Text Edit
+defaults write com.apple.TextEdit RichText -int 0
+
+# Stop Time Machine from asking if I want to use new mounted disks for backup
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
