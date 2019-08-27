@@ -16,6 +16,23 @@ alias sr='screen -r'
 alias sl='screen -list'
 alias shareip='dns-sd -G v4v6 MACNAME.local'
 
+alias connect_bt='osascript ~/code/connect_bt.scpt'
+alias lastcommandassudo="sudo !!"
+alias serveashttpserver="python -m SimpleHTTPServer"
+alias runpreviouscommanbutwith="^foo^bar"
+alias myexternalip="curl ifconfig.me"
+alias executelaster="echo \"ls -l\" | at midnight"
+alias soundtohost="dd if=/dev/dsp | ssh -c arcfour -C username@host dd of=/dev/dsp"
+alias downloadpage="wget --random-wait -r -p -e robots=off -U mozilla http://www.example.com"
+alias sshtunnel="ssh -t reachable_host ssh unreachable_host"
+alias mostusedcommand="history | awk '{a[$2]++}END{for(i in a){print a[i] \" \" i}}' | sort -rn | head"
+alias pingalert="ping -i 60 -a IP_address"
+alias ipconnected="lsof -P -i -n"
+alias backwardtrick="echo \"The date is: $(date +%D)\""
+alias removeduplicateentriesinfile="awk '!x[$0]++' <file>"
+alias definecalc="? () { echo \"$*\" | bc -l; }"
+alias mov2gif="ffmpeg -i in.mov -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > out.gif"
+
 alias convavi2mp4='ffmpeg -i input.avi -acodec libfaac -b:a 128k -vcodec mpeg4 -b:v 1200k -flags +aic+mv4 output.mp4'
 alias forfileinls='for file in `ls`; do echo $file; done'
 alias dos2unix="perl -p -i -e 's/\r\n/\n/'"
@@ -29,6 +46,12 @@ alias redistop="launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server
 
 alias verifypermissions="sudo /usr/libexec/repair_packages --verify --standard-pkgs /"
 alias repairpermissions="sudo /usr/libexec/repair_packages --repair --standard-pkgs --volume /"
+
+alias cleanupgit="git branch | grep -Ev '(\*|master)' | xargs git branch -d"
+alias pushthis="git branch|grep '*'|sed 's/\*/git push origin/'|sh"
+alias getthis="git branch|grep '*'|sed 's/\*/git pull origin/'|sh"
+alias swapgit="git branch|grep -v '*'| head -1|xargs git checkout"
+alias gb="git branch"
 
 alias gitx="open -a /Applications/GitX.app ."
 alias preview='open -a /Applications/Preview.app/'
